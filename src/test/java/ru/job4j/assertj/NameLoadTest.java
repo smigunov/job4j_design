@@ -30,7 +30,14 @@ class NameLoadTest {
     @Test
     void checkValue() {
         NameLoad nameLoad = new NameLoad();
-        assertThatThrownBy(() -> nameLoad.parse("12345=")).isInstanceOf(IllegalArgumentException.class)
+        assertThatThrownBy(() -> nameLoad.parse("12345=", "test")).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("does not contain a value");
+    }
+
+    @Test
+    void checkEmptyParse() {
+        NameLoad nameLoad = new NameLoad();
+        assertThatThrownBy(() -> nameLoad.parse()).isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("array is empty");
     }
 }
