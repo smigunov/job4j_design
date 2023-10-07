@@ -23,11 +23,10 @@ public class MatrixIt implements Iterator<Integer> {
     }
 
     private void movePointToNext() {
-        if (column >= data[row].length - 1) {    //Если стоим на последнем элементе строки, то перемещаем указатель на след. строку
+        if (column >= data[row].length - 1) {
             column = 0;
             row++;
 
-            //Если встретился пустой массив, то переместиться на следующую позицию
             if (row < data.length && data[row].length == 0) {
                 movePointToNext();
             }
@@ -42,10 +41,8 @@ public class MatrixIt implements Iterator<Integer> {
             throw new NoSuchElementException();
         }
 
-        //Запоминаем текущее значение для возврата
         Integer nextValue = data[row][column];
 
-        //Двигаем указатель на след. элемент
         movePointToNext();
         return nextValue;
     }
