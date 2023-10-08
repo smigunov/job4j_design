@@ -30,16 +30,14 @@ public class SimpleLinkedList<E> implements SimpleLinked<E> {
     @Override
     public E get(int index) {
         Objects.checkIndex(index, size);
-        E result = null;
-        int i = 0;
-        for (E curVal : this) {
+        Node<E> curNode = head;
+        for (int i = 0; i < size; i++) {
             if (i == index) {
-                result = curVal;
                 break;
             }
-            i++;
+            curNode = curNode.next;
         }
-        return result;
+        return curNode.item;
     }
 
     @Override
@@ -58,10 +56,10 @@ public class SimpleLinkedList<E> implements SimpleLinked<E> {
 
             @Override
             public E next() {
-                E result = curNode.item;
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
+                E result = curNode.item;
                 curNode = curNode.next;
                 return result;
             }
