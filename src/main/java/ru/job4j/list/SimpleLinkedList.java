@@ -10,7 +10,6 @@ public class SimpleLinkedList<E> implements SimpleLinked<E> {
     private int size;
     private int modCount;
     private Node<E> head;
-    private Node<E> tail;
 
     @Override
     public void add(E value) {
@@ -18,9 +17,12 @@ public class SimpleLinkedList<E> implements SimpleLinked<E> {
         if (head == null) {
             head = curNode;
         } else {
-            tail.next = curNode;
+            Node<E> node = head;
+            while (node.next != null) {
+                node = node.next;
+            }
+            node.next = curNode;
         }
-        tail = curNode;
         modCount++;
         size++;
     }
