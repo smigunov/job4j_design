@@ -13,10 +13,8 @@ public class SimpleArrayList<T> implements SimpleList<T> {
     }
 
     private void grow() {
-        if (size >= container.length || size == 0) {
-            T[] newContainer = (T[]) new Object[(size == 0) ? 1 : (size * 2)];
-            System.arraycopy(container, 0, newContainer, 0, size);
-            container = newContainer;
+        if (size >= container.length) {
+            container = Arrays.copyOf(container, (size == 0) ? 1 : (size * 2));
         }
     }
 
