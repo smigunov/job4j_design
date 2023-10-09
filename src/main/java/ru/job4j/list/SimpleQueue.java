@@ -11,18 +11,17 @@ public class SimpleQueue<T> {
 
     public T poll() {
         if (sizeOut == 0) {
+            if (sizeIn == 0) {
+                throw new NoSuchElementException("Queue is empty");
+            }
             for (int i = 0; i < sizeIn; i++) {
                 out.push(in.pop());
                 sizeOut++;
             }
             sizeIn = 0;
         }
-        try {
-            sizeOut--;
-            return  out.pop();
-        } catch (NoSuchElementException ex) {
-            throw new NoSuchElementException("Queue is empty");
-        }
+        sizeOut--;
+        return  out.pop();
     }
 
     public void push(T value) {
