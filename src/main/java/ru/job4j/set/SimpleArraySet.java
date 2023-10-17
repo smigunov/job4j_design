@@ -10,10 +10,9 @@ public class SimpleArraySet<T> implements SimpleSet<T> {
 
     @Override
     public boolean add(T value) {
-        boolean result = false;
-        if (!this.contains(value)) {
+        boolean result = !this.contains(value);
+        if (result) {
             set.add(value);
-            result = true;
         }
         return result;
     }
@@ -21,9 +20,8 @@ public class SimpleArraySet<T> implements SimpleSet<T> {
     @Override
     public boolean contains(T value) {
         boolean result = false;
-        Iterator<T> iterator = set.iterator();
-        while (iterator.hasNext()) {
-            if ((value == null && iterator.next() == null) || (iterator.next().equals(value))) {
+        for (T i : set) {
+            if ((value == null && i == null) || (i.equals(value))) {
                 result = true;
                 break;
             }
