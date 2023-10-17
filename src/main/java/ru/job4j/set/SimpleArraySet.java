@@ -22,7 +22,7 @@ public class SimpleArraySet<T> implements SimpleSet<T> {
     public boolean contains(T value) {
         boolean result = false;
         for (T i : set) {
-            if ((value == null && i != null) || (Objects.equals(value, i))) {
+            if (Objects.equals(value, i)) {
                 result = true;
                 break;
             }
