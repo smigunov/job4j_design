@@ -3,6 +3,7 @@ package ru.job4j.map;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class NonCollisionMap<K, V> implements SimpleMap<K, V> {
 
@@ -26,8 +27,7 @@ public class NonCollisionMap<K, V> implements SimpleMap<K, V> {
 
         if (table[idx] == null) {
             count++;
-            MapEntry<K, V> elm = new MapEntry(key, value);
-            table[idx] = elm;
+            table[idx] = new MapEntry(key, value);
             modCount++;
             result = true;
         }
@@ -35,18 +35,15 @@ public class NonCollisionMap<K, V> implements SimpleMap<K, V> {
     }
 
     private int hash(int hashCode) {
-        return (capacity - 1) & (hashCode ^ hashCode >>> 16);
+        return hashCode ^ (hashCode >>> 16);
     }
 
     private int indexFor(int hash) {
-        return hash & 15;
+        return (capacity - 1) & hash;
     }
 
     private int getIndex(K key) {
-        if (key == null) {
-            return 0;
-        }
-        return indexFor(hash(key.hashCode()));
+        return indexFor(hash(Objects.hashCode(key)));
     }
 
     private void expand() {
@@ -61,13 +58,7 @@ public class NonCollisionMap<K, V> implements SimpleMap<K, V> {
     }
 
     private boolean keysAreEqual(K key1, K key2) {
-        if (key1 == null && key2 == null) {
-            return true;
-        }
-        if (key1 == null || key2 == null) {
-            return false;
-        }
-        return key1.hashCode() == key2.hashCode() && key1.equals(key2);
+        return Objects.hashCode(key1) == Objects.hashCode(key2) && Objects.equals(key1, key2);
     }
 
     @Override
@@ -84,14 +75,15 @@ public class NonCollisionMap<K, V> implements SimpleMap<K, V> {
     @Override
     public boolean remove(K key) {
         int idx = getIndex(key);
+        boolean result = false;
         if (table[idx] != null) {
             if (keysAreEqual(table[idx].key, key)) {
                 table[idx] = null;
                 modCount++;
-                return true;
+                result = true;
             }
         }
-        return false;
+        return result;
     }
 
     @Override
