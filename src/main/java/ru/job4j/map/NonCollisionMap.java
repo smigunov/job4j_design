@@ -64,10 +64,8 @@ public class NonCollisionMap<K, V> implements SimpleMap<K, V> {
     @Override
     public V get(K key) {
         int idx = getIndex(key);
-        if (table[idx] != null) {
-            if (keysAreEqual(table[idx].key, key)) {
-                return table[idx].value;
-            }
+        if (table[idx] != null && keysAreEqual(table[idx].key, key)) {
+            return table[idx].value;
         }
         return null;
     }
@@ -100,7 +98,7 @@ public class NonCollisionMap<K, V> implements SimpleMap<K, V> {
                 while (curIndex < capacity && table[curIndex] == null) {
                     curIndex++;
                 }
-                return curIndex < capacity && table[curIndex] != null;
+                return curIndex < capacity;
             }
 
             @Override
