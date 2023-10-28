@@ -63,11 +63,12 @@ public class NonCollisionMap<K, V> implements SimpleMap<K, V> {
 
     @Override
     public V get(K key) {
+        V result = null;
         int idx = getIndex(key);
         if (table[idx] != null && keysAreEqual(table[idx].key, key)) {
-            return table[idx].value;
+            result = table[idx].value;
         }
-        return null;
+        return result;
     }
 
     @Override
