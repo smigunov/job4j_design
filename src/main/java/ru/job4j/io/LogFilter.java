@@ -18,7 +18,7 @@ public class LogFilter {
     public List<String> filter() {
         List<String> result = new ArrayList<>();
         try (BufferedReader in = new BufferedReader(new FileReader(this.file))) {
-            result = in.lines().filter(s -> s.matches("^.*404$")).collect(Collectors.toList());
+            result = in.lines().filter(s -> s.matches("^.*\\s404\\s\\d+$")).collect(Collectors.toList());
         } catch (IOException e) {
             e.printStackTrace();
         }
