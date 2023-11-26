@@ -18,14 +18,21 @@ public class Config {
 
     public void load() {
         try (BufferedReader read = new BufferedReader(new FileReader(this.path))) {
-            List<String> lst = read.lines().collect(Collectors.toList());
-            if (!lst.stream().allMatch(s -> s.isEmpty() || s.charAt(0) == '#' || s.matches("^.+=.+$"))) {
-                throw new IllegalArgumentException();
-            }
-            this.values = lst.stream().filter(s -> s.matches("^.+=.+$")).map(s -> s.split("=")).collect(Collectors.toMap(s -> s[0], s -> s[1]));
+            this.values = read.lines()
+                    .filter(this::validate)
+                    .filter(s -> s.matches("^.+=.+$"))
+                    .map(s -> s.split("="))
+                    .collect(Collectors.toMap(s -> s[0], s -> s[1]));
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private boolean validate(String s) {
+        if (!(s.isEmpty() || s.charAt(0) == '#' || s.matches("^.+=.+$"))) {
+            throw new IllegalArgumentException("Ошибка в строке: '" + s + "'");
+        }
+        return true;
     }
 
     public String value(String key) {
@@ -44,6 +51,7 @@ public class Config {
     }
 
     public static void main(String[] args) {
-        System.out.println(new Config("data/app.properties"));
+        Config config = new Config("./data/corrupted_pairs.properties");
+        config.load();
     }
 }

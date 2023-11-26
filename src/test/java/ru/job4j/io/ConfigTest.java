@@ -42,6 +42,6 @@ class ConfigTest {
     void whenNoValueForKey() {
         String path = "./data/corrupted_pairs.properties";
         Config config = new Config(path);
-        assertThatThrownBy(config::load).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(config::load).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("keyWithoutValue=");
     }
 }
