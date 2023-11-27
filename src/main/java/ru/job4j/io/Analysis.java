@@ -17,26 +17,21 @@ public class Analysis {
         try (BufferedReader read = new BufferedReader(new FileReader(source))) {
             List<String> startCodes = List.of("400", "500");
             List<String> endCodes = List.of("200", "300");
-            String[] result = read.lines()
-                    .map(s -> s.split(" "))
-                    .filter(s -> (startCodes.contains(s[0]) || endCodes.contains(s[0])))
-                    .reduce(makeNewStringArray(), (accum, elem) -> {
-                            if (startCodes.contains(elem[0]) && (accum[0] == "END" || accum[0].isEmpty())) {
-                                accum[0] = "BEG";
-                                accum[1] = accum[1] + elem[1] + ";";
-                            } else if (endCodes.contains(elem[0]) && (accum[0] == "BEG")) {
-                                accum[0] = "END";
-                                accum[1] = accum[1] + " " + elem[1] + ";\r\n";
-                            }
-                            return accum;
-                    });
-
-            try (PrintWriter output = new PrintWriter(target)) {
-                output.append(result[1]);
-                output.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
+            PrintWriter output = new PrintWriter(target);
+            String line;
+            boolean isStarted = false;
+            while ((line = read.readLine()) != null) {
+                String[] elm = line.split(" ");
+                if (startCodes.contains(elm[0]) && !isStarted) {
+                    output.append(elm[1]).append(";");
+                    isStarted = true;
+                } else if (endCodes.contains(elm[0]) && isStarted) {
+                    output.append(elm[1]).append(";\r\n");
+                    isStarted = false;
+                }
             }
+            output.flush();
+            output.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
