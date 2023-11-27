@@ -21,7 +21,7 @@ public class Config {
             this.values = read.lines()
                     .filter(this::validate)
                     .filter(s -> s.matches("^.+=.+$"))
-                    .map(s -> s.split("="))
+                    .map(s -> s.split("=", 2))
                     .collect(Collectors.toMap(s -> s[0], s -> s[1]));
         } catch (IOException e) {
             e.printStackTrace();
@@ -30,7 +30,9 @@ public class Config {
 
     private boolean validate(String s) {
         if (!(s.isEmpty() || s.charAt(0) == '#' || s.matches("^.+=.+$"))) {
-            throw new IllegalArgumentException("Ошибка в строке: '" + s + "'");
+            StringBuilder sb = new StringBuilder("Ошибка в строке: ");
+            sb.append(s);
+            throw new IllegalArgumentException(sb.toString());
         }
         return true;
     }
