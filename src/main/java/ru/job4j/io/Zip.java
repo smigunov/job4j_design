@@ -40,13 +40,6 @@ public class Zip {
         String archiveName = argsName.get("o");
         String excludeExtension = argsName.get("e");
 
-        if (pathFolder.isEmpty()) {
-            throw new IllegalArgumentException("Directory is not specified");
-        }
-        if (archiveName.isEmpty()) {
-            throw new IllegalArgumentException("Archive name is not specified");
-        }
-
         Path rootFolder = Paths.get(pathFolder);
 
         if (!rootFolder.toFile().isDirectory()) {
